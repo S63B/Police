@@ -7,10 +7,11 @@ import { AppComponent } from './app.component';
 import {PrimengModule} from "./primeng.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {LiveTrackingModule} from "./livetracking/livetracking.module";
+import {StolenCarsModule} from "./stolen-cars/stolen-cars.module";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -18,7 +19,8 @@ import {LiveTrackingModule} from "./livetracking/livetracking.module";
     HttpModule,
     PrimengModule,
     AppRoutingModule,
-    LiveTrackingModule
+    LiveTrackingModule,
+    StolenCarsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,9 +1,8 @@
 import { NgModule }      from '@angular/core';
 import {
   ButtonModule, SliderModule, PanelModule, InputTextModule, DataTableModule, MessagesModule, ConfirmDialogModule,
-  ConfirmationService, PaginatorModule
+  ConfirmationService, PaginatorModule, GMapModule,
 }  from 'primeng/primeng';
-import {GMapModule} from "primeng/components/gmap/gmap";
 
 
 @NgModule({

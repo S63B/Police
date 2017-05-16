@@ -35,7 +35,6 @@ export class LivetrackingComponent implements OnInit, OnDestroy{
   updateData(scope:this){
     scope.liveTrackingService.getLatestPollByLicenseplate(scope.licensePlate).subscribe(
        res =>{
-         debugger;
          let pol = new Pol(res.id, res.lat, res.lng ,res.timestampMillis);
          scope.pols.push(pol);
        },
