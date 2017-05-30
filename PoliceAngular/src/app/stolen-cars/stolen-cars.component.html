@@ -1,0 +1,69 @@
+<h1>
+  {{title}}
+</h1>
+
+<input placeholder="License plate..." [(ngModel)]="search" >
+<p-dataList [value]="cars | searchfilter: 'licensePlate' : search" [paginator]="true" [rows]="8">
+  <ng-template let-car   pTemplate="item">
+    <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px;border-bottom:1px solid #D5D5D5;">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-3" style="text-align:center;vertical-align: middle"><i class="fa fa-search" (click)="showInfoCar(car)" style="cursor:pointer;float:left;margin-top: 25px"></i><img src="assets/nl.png"></div>
+        <div class="ui-grid-col-9" (click)="showHistoryCar(car)">
+          <div class="ui-grid ui-grid-responsive ui-fluid">
+            <div class="ui-grid-row" >
+              <div class="ui-grid-col-2">License plate:</div>
+              <div class="ui-grid-col-10">{{car.licensePlate.license}}</div>
+            </div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-2">Id:</div>
+              <div class="ui-grid-col-10">{{car.id}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-dataList>
+
+<br>
+
+<div *ngIf="selectedCar != null">
+  <p-panel header="Owner history" [toggleable]="true">
+    <p>Name: {{owner?.name}}</p>
+    <p>Username: {{owner?.username}}</p>
+    <p>Address: {{owner?.address}}</p>
+    <p>Residence: {{owner?.residence}}</p>
+    <p>Uses website: {{owner?.usesWebsite}}</p>
+    <p>Role : {{owner?.role}}</p>
+    <p>Id : {{owner?.id}}</p>
+  </p-panel>
+</div>
+
+<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="350" (onAfterHide)="onDialogHide()">
+  <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;vertical-align: middle">
+    <div class="ui-grid-row" style="width: inherit">
+      <div class="ui-grid-col-12"><img src="assets/nl.png"></div>
+    </div>
+    <br>
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
+      <div class="ui-grid-col-4" style="text-align:center">Owner:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{owner?.name}}</div>
+    </div>
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
+      <div class="ui-grid-col-4" style="text-align:center">Residence:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{owner?.residence}}</div>
+    </div>
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
+      <div class="ui-grid-col-4" style="text-align:center">License plate:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.licensePlate.license}}</div>
+    </div>
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
+      <div class="ui-grid-col-4" style="text-align:center">Id:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.id}}</div>
+    </div>
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
+      <div class="ui-grid-col-4" style="text-align:center">Energy label:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.energyLabel}}</div>
+    </div>
+  </div>
+</p-dialog>
