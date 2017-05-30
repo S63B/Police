@@ -14,17 +14,3 @@ export class Owner {
               public ownedCars: object[]) {
   }
 }
-
-
-// private int id;
-// private String username;
-// private String password;
-// private String salt;
-// private String name;
-// private String address;
-// private String residence;
-// private boolean usesWebsite;
-// private String role;
-// private boolean canEditPrice;
-// private List<Invoice> invoices;
-// private List<Car_Ownership> ownedCars;
