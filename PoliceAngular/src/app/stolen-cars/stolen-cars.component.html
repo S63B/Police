@@ -29,7 +29,13 @@
 
 <div *ngIf="selectedCar != null">
   <p-panel header="Owner history" [toggleable]="true">
-    <p>License plate: {{selectedCar.licensePlate.license}}</p>
+    <p>Name: {{owner?.name}}</p>
+    <p>Username: {{owner?.username}}</p>
+    <p>Address: {{owner?.address}}</p>
+    <p>Residence: {{owner?.residence}}</p>
+    <p>Uses website: {{owner?.usesWebsite}}</p>
+    <p>Role : {{owner?.role}}</p>
+    <p>Id : {{owner?.id}}</p>
   </p-panel>
 </div>
 
@@ -39,6 +45,14 @@
       <div class="ui-grid-col-12"><img src="assets/nl.png"></div>
     </div>
     <br>
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
+      <div class="ui-grid-col-4" style="text-align:center">Owner:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{owner?.name}}</div>
+    </div>
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
+      <div class="ui-grid-col-4" style="text-align:center">Residence:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{owner?.residence}}</div>
+    </div>
     <div class="ui-grid-row" class="ui-grid-row-dialog">
       <div class="ui-grid-col-4" style="text-align:center">License plate:</div>
       <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.licensePlate.license}}</div>
