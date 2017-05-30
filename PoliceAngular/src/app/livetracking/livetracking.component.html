@@ -1,20 +1,23 @@
 <h1>
   {{title}}
 </h1>
-<div>Licence plate:<input type="text" pInputText [(ngModel)]="licensePlate"/> <br>
+<div>Licence plate:<input type="text" pInputText [(ngModel)]="licensePlate"/>
   <button pButton type="button" label="Track car!" (click)="trackCar()"></button>
 </div>
+
 <br>
 
-<p>Polls: {{pols.length}} </p>
 <div>
   <div *ngIf="pols.length > 0; else noPols" id="google-map-wrapper">
-    <sebm-google-map style="width: 1200px;height: 1200px">
+    <sebm-google-map class="google-maps" >
       <sebm-google-map-directions [pols]="pols"></sebm-google-map-directions>
     </sebm-google-map>
   </div>
+
+  <br>
+
   <ng-template #noPols>
-    <p>No pols</p>
+    <p>No polls available</p>
   </ng-template>
 </div>
 
