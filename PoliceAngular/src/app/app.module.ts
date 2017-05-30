@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule  } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-
 import { AppComponent } from './app.component';
 import {PrimengModule} from "./primeng.module";
 import {AppRoutingModule} from "./app-routing.module";
@@ -20,7 +19,7 @@ import {StolenCarsModule} from "./stolen-cars/stolen-cars.module";
     PrimengModule,
     AppRoutingModule,
     LiveTrackingModule,
-    StolenCarsModule
+    StolenCarsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

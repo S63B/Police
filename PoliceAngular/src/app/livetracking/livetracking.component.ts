@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {Pol} from "../pol";
+import {Pol} from "../domain/pol";
 import {liveTrackingService} from "./livetracking.service";
 
 @Component({
@@ -28,9 +28,21 @@ export class LivetrackingComponent implements OnInit, OnDestroy{
 
   trackCar(){
    let scope = this;
-   this.updateData(this);
+   this.initData();
    this.intervalTimer = window.setInterval(this.updateData, 30000, scope);
   }
+
+  initData(){
+    this.liveTrackingService.getAllPollsByLicenseplate(this.licensePlate).subscribe(
+      res =>{
+        this.pols.concat(res);
+      },
+      error => {
+        alert(error)
+        console.log(error);
+      });
+  }
+
 
   updateData(scope:this){
     scope.liveTrackingService.getLatestPollByLicenseplate(scope.licensePlate).subscribe(

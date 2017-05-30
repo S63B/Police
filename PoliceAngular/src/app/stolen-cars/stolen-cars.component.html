@@ -1,12 +1,44 @@
-<p>
-  stolen-cars works!
-</p>
+<h1>
+  {{title}}
+</h1>
 
-<h3>Stolen Cars</h3>
-<div id="stolenCarDiv" class="panel">
-  <ul class="list-group">
-    <li class="list-group-item" *ngFor="let car of cars">
-      <h4>{{car.licensePlate}}</h4>
-    </li>
-  </ul>
-</div>
+<input placeholder="License plate..." [(ngModel)]="search" >
+<p-dataList [value]="cars | searchfilter: 'licensePlate' : search" [paginator]="true" [rows]="8">
+  <ng-template let-car   pTemplate="item">
+    <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px;border-bottom:1px solid #D5D5D5;">
+      <div class="ui-grid-row" (click)="selectCar(car)">
+        <div class="ui-grid-col-3" style="text-align:center;vertical-align: middle"><i class="fa fa-search" (click)="infoCar(car)" style="cursor:pointer;float:left;margin-top: 25px"></i><img src="assets/nederland.png"></div>
+        <div class="ui-grid-col-9">
+          <div class="ui-grid ui-grid-responsive ui-fluid">
+            <div class="ui-grid-row" >
+              <div class="ui-grid-col-2">License plate:</div>
+              <div class="ui-grid-col-10">{{car.licensePlate}}</div>
+            </div>
+            <div class="ui-grid-row">
+              <div class="ui-grid-col-2">Id:</div>
+              <div class="ui-grid-col-10">{{car.id}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-dataList>
+
+
+
+<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="350" (onAfterHide)="onDialogHide()">
+  <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="selectedCar" style="font-size:16px;vertical-align: middle">
+    <div class="ui-grid-row" style="width: inherit">
+      <div class="ui-grid-col-12" style="text-align:center"><img src="assets/nederland.png"></div>
+    </div>
+    <div class="ui-grid-row" style="width: 320px;">
+      <div class="ui-grid-col-4" style="text-align:center">License plate:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{selectedCar.licensePlate}}</div>
+    </div>
+    <div class="ui-grid-row" style="width: 320px">
+      <div class="ui-grid-col-4" style="text-align:center">Id:</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{selectedCar.id}}</div>
+    </div>
+  </div>
+</p-dialog>

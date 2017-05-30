@@ -1,3 +1,18 @@
-/**
- * Created by arjan on 16-5-2017.
- */
+import {Injectable, Pipe, PipeTransform} from '@angular/core';
+
+@Pipe({
+  name: 'searchfilter'
+})
+
+@Injectable()
+export class SearchFilterPipe implements PipeTransform {
+  transform(items: any[], field: string, value: string): any[] {
+    if (!items) {
+      console.log("no items to filter");
+      return [];
+    }
+    return items.filter(it => it[field].includes(value));
+  }
+}
+
+

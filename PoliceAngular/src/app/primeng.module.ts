@@ -1,8 +1,10 @@
 import { NgModule }      from '@angular/core';
 import {
   ButtonModule, SliderModule, PanelModule, InputTextModule, DataTableModule, MessagesModule, ConfirmDialogModule,
-  ConfirmationService, PaginatorModule, GMapModule,
+  ConfirmationService, PaginatorModule, GMapModule,DataListModule,DialogModule
 }  from 'primeng/primeng';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
 
 
 @NgModule({
@@ -15,7 +17,10 @@ import {
     MessagesModule,
     ConfirmDialogModule,
     PaginatorModule,
-    GMapModule
+    GMapModule,
+    DataListModule,
+    DialogModule,
+    BrowserAnimationsModule
   ],
   providers:    [ ConfirmationService ],
   exports:[
@@ -27,7 +32,10 @@ import {
     MessagesModule,
     ConfirmDialogModule,
     PaginatorModule,
-    GMapModule
+    GMapModule,
+    DataListModule,
+    DialogModule,
+    BrowserAnimationsModule
   ]
 })
 export class PrimengModule { }
