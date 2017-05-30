@@ -5,10 +5,7 @@ import com.S63B.domain.Entities.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -18,6 +15,7 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.REQUEST_TIMEOUT;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/police")
 public class PoliceRest {
 
@@ -62,7 +60,7 @@ public class PoliceRest {
      * Sample request: GET http://localhost:8080/police/stolen_cars
      * @return List of stolen cars if successful else the error message.
      */
-    @RequestMapping(value = "/stolen_cars", method = RequestMethod.GET)
+    @RequestMapping(value = "stolen_cars", method = RequestMethod.GET)
     public Response getStolenCars(){
         GenericEntity<List<Car>> cars = new GenericEntity<List<Car>>(policeService.getStolenCars()) {};
 

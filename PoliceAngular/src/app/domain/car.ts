@@ -6,7 +6,11 @@
 export class Car {
   constructor(
     public id: number,
-    public licensePlate: string,
+    public licensePlate: {
+      expirationDate:Object
+      id:number
+      license:string
+    },
     public energyLabel: string,
     public stolen: boolean
   ) {}

@@ -12,31 +12,37 @@ import {Pol} from "../domain/pol";
 export class StolenCarsComponent implements OnInit {
   title = 'Stolen cars';
   selectedCar: Car;
-  displayDialog: boolean;
+  infoCar:Car;
+  displayDialog: boolean = false;
   cars: Car[] = [];
   search:string = "";
-  showTracking:boolean = false;
-  intervalTimer : number;
-  pols:Pol[] = [];
 
   constructor(private stolenCarService: StolenCarService) { }
 
   ngOnInit() {
-    this.stolenCarService.getStolenCars()
-      .then(cars => this.cars = cars);
+    this.getStolenCars();
   }
 
-  selectCar(car: Car) {
-    this.showTracking = true;
-    alert(Car);
+  getStolenCars(){
+    this.stolenCarService.getStolenCars().subscribe(
+      res => {
+        this.cars = <Car[]> res;
+      },
+      err => {
+        console.log(err);
+      });
   }
 
-  infoCar(car: Car) {
+  showHistoryCar(car: Car) {
     this.selectedCar = car;
+  }
+
+  showInfoCar(car: Car) {
+    this.infoCar = car;
     this.displayDialog = true;
   }
 
   onDialogHide() {
-    this.selectedCar = null;
+    this.infoCar = null;
   }
 }
