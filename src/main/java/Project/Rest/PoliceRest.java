@@ -10,6 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.Response;
+import java.util.List;
+
+import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.REQUEST_TIMEOUT;
+
 @RestController
 @RequestMapping("/police")
 public class PoliceRest {
@@ -48,5 +55,20 @@ public class PoliceRest {
         }
 
         return new ResponseEntity<>(car, status);
+    }
+
+    /**
+     * Returns a list of stolen cars.
+     * Sample request: GET http://localhost:8080/police/stolen_cars
+     * @return List of stolen cars if successful else the error message.
+     */
+    @RequestMapping(value = "/stolen_cars", method = RequestMethod.GET)
+    public Response getStolenCars(){
+        GenericEntity<List<Car>> cars = new GenericEntity<List<Car>>(policeService.getStolenCars()) {};
+
+        if(cars!=null){
+            return Response.status(OK).entity(cars).build();
+        }
+        return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();
     }
 }

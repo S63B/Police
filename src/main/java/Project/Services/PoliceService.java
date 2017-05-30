@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -33,5 +34,9 @@ public class PoliceService {
         carDao.save(car);
 
         return car;
+    }
+
+    public List<Car> getStolenCars(){
+        return carDao.findByIsStolen(true);
     }
 }
