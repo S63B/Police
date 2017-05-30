@@ -36,18 +36,18 @@
 <p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="350" (onAfterHide)="onDialogHide()">
   <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;vertical-align: middle">
     <div class="ui-grid-row" style="width: inherit">
-      <div class="ui-grid-col-12" style="text-align:center"><img src="assets/nl.png"></div>
+      <div class="ui-grid-col-12"><img src="assets/nl.png"></div>
     </div>
     <br>
-    <div class="ui-grid-row" style="width: 320px;">
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
       <div class="ui-grid-col-4" style="text-align:center">License plate:</div>
       <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.licensePlate.license}}</div>
     </div>
-    <div class="ui-grid-row" style="width: 320px">
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
       <div class="ui-grid-col-4" style="text-align:center">Id:</div>
       <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.id}}</div>
     </div>
-    <div class="ui-grid-row" style="width: 320px">
+    <div class="ui-grid-row" class="ui-grid-row-dialog">
       <div class="ui-grid-col-4" style="text-align:center">Energy label:</div>
       <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.energyLabel}}</div>
     </div>
