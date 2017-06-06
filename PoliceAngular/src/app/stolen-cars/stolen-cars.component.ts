@@ -16,9 +16,15 @@ export class StolenCarsComponent implements OnInit {
   infoCar:Car;
   displayDialog: boolean = false;
   cars: Car[] = [];
-  search:string = "";
+  filterSearch:string = "";
+
   owner:Owner;
   ownerHistory:Owner[];
+
+  searchLicense:string= "";
+  searchCar:Car=null;
+
+  isStolen:boolean;
 
   constructor(private stolenCarService: StolenCarService) { }
 
@@ -71,4 +77,28 @@ export class StolenCarsComponent implements OnInit {
   onDialogHide() {
     this.infoCar = null;
   }
+
+  searchLicensePlate(){
+    this.stolenCarService.getCar(this.searchLicense).subscribe(
+      res => {
+        console.log(res);
+        this.searchCar = <Car>res;
+      },
+      err => {
+        this.searchCar = null;
+        console.log(err);
+      });
+  }
+
+  setStolen(e) {
+    this.searchCar.stolen = e.checked;
+    this.stolenCarService.setStolen(this.searchCar.id, this.searchCar.stolen).subscribe(
+      res => {
+        console.log("Stolen changed: " + res.stolen);
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
 }
