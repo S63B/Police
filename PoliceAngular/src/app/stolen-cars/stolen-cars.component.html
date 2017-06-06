@@ -2,15 +2,19 @@
   {{title}}
 </h1>
 
-<input placeholder="License plate..." [(ngModel)]="search" >
+<input placeholder="License plate..." [(ngModel)]="search">
 <p-dataList [value]="cars | searchfilter: 'licensePlate' : search" [paginator]="true" [rows]="8">
-  <ng-template let-car   pTemplate="item">
-    <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px;border-bottom:1px solid #D5D5D5;">
+  <ng-template let-car pTemplate="item">
+    <div class="ui-grid ui-grid-responsive ui-fluid"
+         style="font-size:16px;padding:20px;border-bottom:1px solid #D5D5D5;">
       <div class="ui-grid-row">
-        <div class="ui-grid-col-3" style="text-align:center;vertical-align: middle"><i class="fa fa-search" (click)="showInfoCar(car)" style="cursor:pointer;float:left;margin-top: 25px"></i><img src="assets/nl.png"></div>
+        <div class="ui-grid-col-3" style="text-align:center;vertical-align: middle"><i class="fa fa-search"
+                                                                                       (click)="showInfoCar(car)"
+                                                                                       style="cursor:pointer;float:left;margin-top: 25px"></i><img
+          src="assets/nl.png"></div>
         <div class="ui-grid-col-9" (click)="showHistoryCar(car)">
           <div class="ui-grid ui-grid-responsive ui-fluid">
-            <div class="ui-grid-row" >
+            <div class="ui-grid-row">
               <div class="ui-grid-col-2">License plate:</div>
               <div class="ui-grid-col-10">{{car.licensePlate.license}}</div>
             </div>
@@ -29,17 +33,49 @@
 
 <div *ngIf="selectedCar != null">
   <p-panel header="Owner history" [toggleable]="true">
-    <p>Name: {{owner?.name}}</p>
-    <p>Username: {{owner?.username}}</p>
-    <p>Address: {{owner?.address}}</p>
-    <p>Residence: {{owner?.residence}}</p>
-    <p>Uses website: {{owner?.usesWebsite}}</p>
-    <p>Role : {{owner?.role}}</p>
-    <p>Id : {{owner?.id}}</p>
+    <div *ngFor="let owner of ownerHistory; let i=index">
+      <p-panel [toggleable]="true">
+        <p-header>
+          <div *ngIf="i == 0">Current Owner</div>
+          <div *ngIf="i > 0">Past Owner</div>
+        </p-header>
+        <tr>
+          <td>Name:</td>
+          <td>{{owner?.name}}</td>
+        </tr>
+        <tr>
+          <td>Username:</td>
+          <td>{{owner?.username}}</td>
+        </tr>
+        <tr>
+          <td>Address:</td>
+          <td>{{owner?.address}}</td>
+        </tr>
+        <tr>
+          <td>Residence:</td>
+          <td>{{owner?.residence}}</td>
+        </tr>
+        <tr>
+          <td>Uses website:</td>
+          <td>{{owner?.usesWebsite}}</td>
+        </tr>
+        <tr>
+          <td>Role :</td>
+          <td>{{owner?.role}}</td>
+        </tr>
+        <tr>
+          <td>Id :</td>
+          <td>{{owner?.id}}</td>
+        </tr>
+      </p-panel>
+    </div>
+
+
   </p-panel>
 </div>
 
-<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="350" (onAfterHide)="onDialogHide()">
+<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+          width="350" (onAfterHide)="onDialogHide()">
   <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;vertical-align: middle">
     <div class="ui-grid-row" style="width: inherit">
       <div class="ui-grid-col-12"><img src="assets/nl.png"></div>

@@ -15,3 +15,8 @@ img {
 .ui-grid-col-12{
   text-align:center;
 }
+
+td{
+  padding: 2px 20px 2px 2px;
+}
+

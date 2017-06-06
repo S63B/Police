@@ -55,4 +55,16 @@ public class CarOwnerService {
         }
         return  returnOwner;
     }
+
+    public List<Owner> getCarOwnerHistory(Car car) {
+        List<Car_Ownership> car_ownerships = carOwnerDao.getAllByCar(car);
+        List<Owner> ownerHistory = new ArrayList<>();
+
+        if(car_ownerships != null){
+            for(Car_Ownership c : car_ownerships){
+                ownerHistory.add(c.getOwner());
+            }
+        }
+        return  ownerHistory;
+    }
 }

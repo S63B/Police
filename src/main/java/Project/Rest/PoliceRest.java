@@ -16,8 +16,6 @@ import java.util.List;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.REQUEST_TIMEOUT;
 
-import javax.ws.rs.Path;
-
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/police")
@@ -61,6 +59,21 @@ public class PoliceRest {
             status = HttpStatus.NO_CONTENT;
         }
         return new ResponseEntity<>(currentOwner, status);
+    }
+
+    @RequestMapping(value = "{id}/owner_history", method = RequestMethod.GET)
+    public ResponseEntity<List<Owner>> getOwnerHistory(@PathVariable("id") int id) {
+        HttpStatus status = HttpStatus.OK;
+
+        Car getCar = policeService.getCar(id);
+        List<Owner> ownerHistory = null;
+        if(getCar != null){
+            ownerHistory = carOwnerService.getCarOwnerHistory(getCar);
+        }
+        if(ownerHistory == null){
+            status = HttpStatus.NO_CONTENT;
+        }
+        return new ResponseEntity<>(ownerHistory, status);
     }
 
     @RequestMapping(value = "{id}/{stolen}", method = RequestMethod.POST)

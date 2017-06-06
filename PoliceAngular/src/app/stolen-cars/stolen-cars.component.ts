@@ -18,6 +18,7 @@ export class StolenCarsComponent implements OnInit {
   cars: Car[] = [];
   search:string = "";
   owner:Owner;
+  ownerHistory:Owner[];
 
   constructor(private stolenCarService: StolenCarService) { }
 
@@ -36,9 +37,9 @@ export class StolenCarsComponent implements OnInit {
   }
 
   showHistoryCar(car: Car) {
-    this.owner = null;
+    this.ownerHistory = null;
     this.selectedCar = car;
-    this.getCurrentOwner(car);
+    this.getOwnerHistory(car);
   }
 
   showInfoCar(car: Car) {
@@ -51,6 +52,16 @@ export class StolenCarsComponent implements OnInit {
     this.stolenCarService.getCurrentOwner(car.id).subscribe(
       res => {
         this.owner = <Owner>res;
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+  getOwnerHistory(car:Car){
+    this.stolenCarService.getOwnerHistory(car.id).subscribe(
+      res => {
+        this.ownerHistory = <Owner[]>res;
       },
       err => {
         console.log(err);

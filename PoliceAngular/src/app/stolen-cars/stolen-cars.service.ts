@@ -10,7 +10,7 @@ import {Owner} from "../domain/Owner";
 
 @Injectable()
 export class StolenCarService {
-  private apiUrl = 'http://localhost:8080/police/'; // URL to rest api
+  private apiUrl = 'http://localhost:8080/police'; // URL to rest api
 
   constructor(private http: Http) {}
 
@@ -23,7 +23,13 @@ export class StolenCarService {
   }
 
   getCurrentOwner(id:number): Observable<Owner> {
-    return this.http.get(this.apiUrl + id + "/owner")
+    return this.http.get(this.apiUrl + "/" + id + "/owner")
+      .map(this.extractDataResponseEntity)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  getOwnerHistory(id:number): Observable<Owner[]> {
+    return this.http.get(this.apiUrl + "/" + id + "/owner_history")
       .map(this.extractDataResponseEntity)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
