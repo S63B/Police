@@ -1,3 +1,4 @@
+import {Tracker} from "./Tracker";
 /**
  * Created by Nekkyou on 2-5-2017.
  */
@@ -12,6 +13,7 @@ export class Car {
       license:string
     },
     public energyLabel: string,
-    public stolen: boolean
+    public stolen: boolean,
+    public tracker:Tracker
   ) {}
 }
