@@ -52,7 +52,6 @@ export class StolenCarService {
   }
 
   private extractDataResponseEntity(res: Response) {
-    debugger;
     let body = res.json();
     return body ;
   }

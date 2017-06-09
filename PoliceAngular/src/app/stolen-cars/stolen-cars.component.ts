@@ -3,6 +3,8 @@ import {StolenCarService} from "./stolen-cars.service";
 import {Component, OnInit, ViewEncapsulation} from "@angular/core";
 import {Pol} from "../domain/pol";
 import {Owner} from "../domain/Owner";
+import {forEach} from "@angular/router/src/utils/collection";
+import {Tracker} from "../domain/Tracker";
 
 @Component({
   selector: 'app-stolen-cars',
@@ -40,6 +42,10 @@ export class StolenCarsComponent implements OnInit {
       err => {
         console.log(err);
       });
+  }
+
+  isCountryDefined(val:any){
+    return typeof val !== 'undefined' && val != null ;
   }
 
   showHistoryCar(car: Car) {
