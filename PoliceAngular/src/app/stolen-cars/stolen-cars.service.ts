@@ -34,13 +34,25 @@ export class StolenCarService {
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
+  getCar(licensePlate:string): Observable<Car> {
+    return this.http.get(this.apiUrl + "/license_plate/" + licensePlate)
+      .map(this.extractDataResponseEntity)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  setStolen(carId:number, isStolen:boolean): Observable<Car>{
+    return this.http.post(this.apiUrl + "/" + carId + "/" + isStolen, {headers: new Headers()})
+      .map(this.extractDataResponseEntity)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
   private extractResponse(res: Response) {
     let body = res.text();
-    return JSON.parse(body).entity || {};
+    return JSON.parse(body).entity;
   }
 
   private extractDataResponseEntity(res: Response) {
     let body = res.json();
-    return body || { };
+    return body ;
   }
 }

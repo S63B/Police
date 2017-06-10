@@ -2,6 +2,7 @@ package Project.Services;
 
 import Project.DAO.CarDao;
 import com.S63B.domain.Entities.Car;
+import com.S63B.domain.Entities.LicensePlate;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,11 @@ public class CarService {
     }
 
     public Car getCarById(int id){
-       return carDao.findOne(id);
+        return carDao.findOne(id);
+    }
+
+    public Car getCarByLicensePlate(LicensePlate licensePlate){
+        return carDao.findByLicensePlate(licensePlate);
     }
 
     private Car updateCar(Car car){

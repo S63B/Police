@@ -3,6 +3,8 @@ import {StolenCarService} from "./stolen-cars.service";
 import {Component, OnInit, ViewEncapsulation} from "@angular/core";
 import {Pol} from "../domain/pol";
 import {Owner} from "../domain/Owner";
+import {forEach} from "@angular/router/src/utils/collection";
+import {Tracker} from "../domain/Tracker";
 
 @Component({
   selector: 'app-stolen-cars',
@@ -16,9 +18,15 @@ export class StolenCarsComponent implements OnInit {
   infoCar:Car;
   displayDialog: boolean = false;
   cars: Car[] = [];
-  search:string = "";
+  filterSearch:string = "";
+
   owner:Owner;
   ownerHistory:Owner[];
+
+  searchLicense:string= "";
+  searchCar:Car=null;
+
+  isStolen:boolean;
 
   constructor(private stolenCarService: StolenCarService) { }
 
@@ -34,6 +42,10 @@ export class StolenCarsComponent implements OnInit {
       err => {
         console.log(err);
       });
+  }
+
+  isCountryDefined(val:any){
+    return typeof val !== 'undefined' && val != null ;
   }
 
   showHistoryCar(car: Car) {
@@ -71,4 +83,28 @@ export class StolenCarsComponent implements OnInit {
   onDialogHide() {
     this.infoCar = null;
   }
+
+  searchLicensePlate(){
+    this.stolenCarService.getCar(this.searchLicense).subscribe(
+      res => {
+        console.log(res);
+        this.searchCar = <Car>res;
+      },
+      err => {
+        this.searchCar = null;
+        console.log(err);
+      });
+  }
+
+  setStolen(e) {
+    this.searchCar.stolen = e.checked;
+    this.stolenCarService.setStolen(this.searchCar.id, this.searchCar.stolen).subscribe(
+      res => {
+        console.log("Stolen changed: " + res.stolen);
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
 }
