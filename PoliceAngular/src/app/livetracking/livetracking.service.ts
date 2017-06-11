@@ -16,47 +16,22 @@ export class liveTrackingService {
   }
 
   public getLatestPollByLicenseplate(licenseplate: String): Observable<Pol> {
-    return this.http.get(this.baseUrl + "/last_poll?license_plate=" + licenseplate)
-      .map(this.extractDataPoll);
+    return Observable.interval(1000)
+      .switchMap(() => this.http.get(this.baseUrl + "/last_poll?license_plate=" + licenseplate)
+        .map(this.extractData)
+        .catch((error: any) => Observable.throw(error.json().error || 'Server error')));
   }
+
 
   public getAllPollsByLicenseplate(licenseplate: String): Observable<Pol[]> {
     return this.http.get(this.baseUrl + "/pols?license_plate=" + licenseplate)
-      .map(this.extractDataPolls);
+      .map(this.extractData)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
-  private extractDataPolls(res: Response) {
+
+  private extractData(res: Response) {
     let body = res.text();
-    return JSON.parse(body).entity as Pol[];
+    return JSON.parse(body).entity;
   }
-  private extractDataPoll(res: Response) {
-    let body = res.text();
-    return JSON.parse(body).entity as Pol;
-  }
-
-  private handleError(error: Response | any) {
-    // In a real world app, you might use a remote logging infrastructure
-    let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
-    } else {
-      errMsg = error.message ? error.message : error.toString();
-    }
-    console.error(errMsg);
-    return Observable.throw(errMsg);
-  }
-
-  //
-  //
-  // public getRidesBetween(id: String, startTime: number, endTime: number): Observable<Ride[]> {
-  //   return this.httpService.get(`${API_URL}rides?license_plate=${id}&start_date=${startTime}&end_date=${endTime}`)
-  //     .map(this.httpService.extractData);
-  // }
-  //
-  // public get(id: String): Observable<Ride> {
-  //   return this.httpService.get(`${API_URL}ride?id=${id}`)
-  //     .map(response => response.json());
-  // }
 }
