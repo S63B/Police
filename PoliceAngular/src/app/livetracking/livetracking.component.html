@@ -11,8 +11,7 @@
 <div>
   <div *ngIf="pols.length > 0; else noPols" id="google-map-wrapper">
     <sebm-google-map class="google-maps">
-      <sebm-google-map-directions [pols]="pols" [oldPols]="oldPols"
-                                  [initialized]="initialized"></sebm-google-map-directions>
+      <sebm-google-map-directions [pols]="pols" [oldPols]="oldPols"></sebm-google-map-directions>
     </sebm-google-map>
   </div>
   <br>

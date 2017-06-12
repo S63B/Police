@@ -12,22 +12,23 @@ export class DirectionsMapDirective implements OnInit,OnDestroy {
 
   @Input() pols;
   @Input() oldPols;
-  @Input() initialized;
+  initialized:boolean = false;
   interval: number;
 
   constructor(private gmapsApi: GoogleMapsAPIWrapper) {}
 
   ngOnInit() {
     this.drawMap(this, this.oldPols, '#8B0000');
-    setInterval(this.drawMap, 5000, this, this.pols, '#006400');
+    this.interval = window.setInterval(this.drawMap, 5000, this, this.pols, '#006400');
   }
 
   ngOnDestroy() {
+    console.log("google maps directive destroy");
     clearInterval(this.interval);
   }
 
   drawMap(scope: this, pols: Pol[], color: string) {
-    console.log(pols);
+    console.log("draw map: " + pols);
     scope.gmapsApi.getNativeMap().then(map => {
       let directionsDisplay = new google.maps.DirectionsRenderer;
       let directionsService = new google.maps.DirectionsService;
@@ -52,8 +53,13 @@ export class DirectionsMapDirective implements OnInit,OnDestroy {
       let waypoints: Waypoint[] = [];
 
       if (pols.length > 0) {
-        for (let i = 0; i < pols.length - 1; i++) {
-          waypoints.push(new Waypoint(new google.maps.LatLng(pols[i].lat, pols[i].lng), true));
+        let maxWayPoints = pols.length -1 -23;
+
+        //draw 1 waypoint and the last 22 waypoints
+        for (let i = pols.length - 1; i > 0; i--) {
+          if(i > maxWayPoints || i == 0){
+            waypoints.push(new Waypoint(new google.maps.LatLng(pols[i].lat, pols[i].lng), true));
+          }
         }
         directionsService.route({
           origin: {lat: pols[0].lat, lng: pols[0].lng},
