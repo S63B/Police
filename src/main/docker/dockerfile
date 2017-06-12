@@ -1,6 +1,6 @@
 FROM frolvlad/alpine-oraclejdk8:slim
 VOLUME /tmp
-ADD Police-0.0.1-SNAPSHOT.jar Police.jar
-RUN sh -c 'touch /Police.jar'
+ADD Police-0.0.1-SNAPSHOT.jar police.jar
+RUN sh -c 'touch /police.jar'
 ENV JAVA_OPTS=""
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /Police.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /police.jar" ]
