@@ -23,7 +23,9 @@ export class LivetrackingComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    this.pollSubscription.unsubscribe();
+    if(this.pollSubscription){
+      this.pollSubscription.unsubscribe();
+    }
   }
 
   ngOnInit() {

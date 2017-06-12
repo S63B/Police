@@ -1,10 +1,11 @@
 import {Car} from "../domain/car";
 import {StolenCarService} from "./stolen-cars.service";
-import {Component, OnInit, ViewEncapsulation} from "@angular/core";
+import {Component, OnInit,OnDestroy, ViewEncapsulation} from "@angular/core";
 import {Pol} from "../domain/pol";
 import {Owner} from "../domain/Owner";
 import {forEach} from "@angular/router/src/utils/collection";
 import {Tracker} from "../domain/Tracker";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-stolen-cars',
@@ -12,7 +13,7 @@ import {Tracker} from "../domain/Tracker";
   styleUrls: ['./stolen-cars.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class StolenCarsComponent implements OnInit {
+export class StolenCarsComponent implements OnInit, OnDestroy {
   title = 'Stolen cars';
   selectedCar: Car;
   infoCar:Car;
@@ -28,10 +29,17 @@ export class StolenCarsComponent implements OnInit {
 
   isStolen:boolean;
 
+  pollSubscription: Subscription = null;
+  pols: Pol[] = [];
+  oldPols: Pol[] = [];
+
   constructor(private stolenCarService: StolenCarService) { }
 
   ngOnInit() {
     this.getStolenCars();
+  }
+  ngOnDestroy(){
+    this.pollSubscription.unsubscribe();
   }
 
   getStolenCars(){
@@ -48,10 +56,14 @@ export class StolenCarsComponent implements OnInit {
     return typeof val !== 'undefined' && val != null ;
   }
 
-  showHistoryCar(car: Car) {
+  selectCar(car: Car) {
     this.ownerHistory = null;
     this.selectedCar = car;
     this.getOwnerHistory(car);
+
+    this.clearMapData();
+    this.initData();
+    this.updateData();
   }
 
   showInfoCar(car: Car) {
@@ -104,6 +116,48 @@ export class StolenCarsComponent implements OnInit {
       },
       err => {
         console.log(err);
+      });
+  }
+
+
+  clearMapData() {
+    if (this.pollSubscription) {
+      this.pollSubscription.unsubscribe();
+    }
+
+    this.oldPols = [];
+    this.pols = [];
+  }
+
+  initData() {
+    this.stolenCarService.getAllPollsByLicenseplate(this.selectedCar.licensePlate.license).subscribe(
+      res => {
+        this.oldPols = this.oldPols.concat(res);
+        console.log("Old pols: " + this.oldPols.length);
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
+  updateData() {
+    this.pollSubscription = this.stolenCarService.getLatestPollByLicenseplate(this.selectedCar.licensePlate.license).subscribe(
+      res => {
+        let contains = false;
+        for (let p of this.pols) {
+          if (p.id == res.id) {
+            contains = true;
+          }
+        }
+        if (!contains) {
+          if (<any>res != "No polls available") {
+            this.pols.push(<Pol>res);
+            console.log("New pols: " + this.pols.length);
+          }
+        }
+      },
+      error => {
+        console.log(error);
       });
   }
 

@@ -6,6 +6,7 @@ img {
 .ui-grid-col-2, .ui-grid-col-4{
   font-weight: bold;
   padding-right: 5px;
+  min-width: 160px;
 }
 
 .ui-grid-row-dialog{
@@ -17,7 +18,32 @@ img {
 }
 
 td{
-  /*padding: 2px 20px 2px 2px;*/
   width: 200px;
+}
+
+.google-maps{
+  width: 775px;
+  height: 350px;
+}
+
+.ui-datalist, .ui-panel {
+  width: 800px;
+}
+
+.ui-panel-titlebar{
+  height: 30px;
+}
+
+#parent {
+  display: flex;
+}
+#narrow {
+  width: 800px;
+}
+#wide {
+  margin-top: 25px;
+  min-height: 600px;
+  margin-left: 20px;
+  flex: 1;
 }
 
