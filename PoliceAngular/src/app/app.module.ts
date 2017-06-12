@@ -7,6 +7,7 @@ import {PrimengModule} from "./primeng.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {LiveTrackingModule} from "./livetracking/livetracking.module";
 import {StolenCarsModule} from "./stolen-cars/stolen-cars.module";
+import {DirectionsMapDirective} from "./directions-map.directive";
 
 @NgModule({
   declarations: [

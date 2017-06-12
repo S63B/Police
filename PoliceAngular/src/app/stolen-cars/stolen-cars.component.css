@@ -17,7 +17,10 @@ img {
 }
 
 td{
-  /*padding: 2px 20px 2px 2px;*/
   width: 200px;
 }
 
+.google-maps{
+  width: 900px;
+  height: 375px;
+}

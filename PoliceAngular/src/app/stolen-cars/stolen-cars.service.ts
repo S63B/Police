@@ -5,12 +5,15 @@ import 'rxjs/add/operator/toPromise';
 import {Car} from "../domain/car";
 import {Observable} from "rxjs";
 import {Owner} from "../domain/Owner";
+import {Pol} from "../domain/pol";
 
 
 
 @Injectable()
 export class StolenCarService {
   private apiUrl = 'http://localhost:8080/police'; // URL to rest api
+  private trackingUrl: String = 'http://192.168.24.120:8080';
+
 
   constructor(private http: Http) {}
 
@@ -43,6 +46,20 @@ export class StolenCarService {
   setStolen(carId:number, isStolen:boolean): Observable<Car>{
     return this.http.post(this.apiUrl + "/" + carId + "/" + isStolen, {headers: new Headers()})
       .map(this.extractDataResponseEntity)
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+  }
+
+  public getLatestPollByLicenseplate(licenseplate: String): Observable<Pol> {
+    return Observable.interval(1000)
+      .switchMap(() => this.http.get(this.trackingUrl + "/last_poll?license_plate=" + licenseplate)
+        .map(this.extractResponse)
+        .catch((error: any) => Observable.throw(error.json().error || 'Server error')));
+  }
+
+
+  public getAllPollsByLicenseplate(licenseplate: String): Observable<Pol[]> {
+    return this.http.get(this.trackingUrl + "/pols?license_plate=" + licenseplate)
+      .map(this.extractResponse)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 

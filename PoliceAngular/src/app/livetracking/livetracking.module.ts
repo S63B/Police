@@ -5,13 +5,12 @@ import {PrimengModule} from "../primeng.module";
 import {LivetrackingComponent} from "./livetracking.component";
 import {liveTrackingService} from "./livetracking.service";
 import {CommonModule} from "@angular/common";
-import {DirectionsMapDirective} from "../directions-map.directive";
 import {AgmCoreModule} from "angular2-google-maps/core";
+import {GoogleMapsModule} from "../GoogleMaps.module";
 
 @NgModule({
   declarations: [
     LivetrackingComponent,
-    DirectionsMapDirective
   ],
   imports: [
     CommonModule,
@@ -19,8 +18,9 @@ import {AgmCoreModule} from "angular2-google-maps/core";
     FormsModule,
     HttpModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDNtmOxKdE2VfxAHO6wTdiqRZMoGN_20cc'
-    })
+      apiKey: 'AIzaSyCAwaMgMpnH4_D_Gc5CbqNKLDn7-FFKE9Q'
+    }),
+    GoogleMapsModule
   ],
   providers: [liveTrackingService],
 })
