@@ -3,9 +3,8 @@ import {
   ButtonModule, SliderModule, PanelModule, InputTextModule, DataTableModule, MessagesModule, ConfirmDialogModule,
   ConfirmationService, PaginatorModule, GMapModule, DataListModule, DialogModule, InputSwitchModule
 }  from 'primeng/primeng';
-import {NoopAnimationsModule} from "@angular/platform-browser/animations";
 
-
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   imports:      [
@@ -20,8 +19,8 @@ import {NoopAnimationsModule} from "@angular/platform-browser/animations";
     GMapModule,
     DataListModule,
     DialogModule,
-    InputSwitchModule,
-    NoopAnimationsModule
+    BrowserAnimationsModule,
+    InputSwitchModule
   ],
   providers:    [ ConfirmationService ],
   exports:[
@@ -36,8 +35,8 @@ import {NoopAnimationsModule} from "@angular/platform-browser/animations";
     GMapModule,
     DataListModule,
     DialogModule,
-    InputSwitchModule,
-    NoopAnimationsModule
+    BrowserAnimationsModule,
+    InputSwitchModule
   ]
 })
 export class PrimengModule { }
