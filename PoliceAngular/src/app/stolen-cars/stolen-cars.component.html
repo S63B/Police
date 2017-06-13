@@ -75,12 +75,12 @@
 
   <!--Owner history of selected car-->
   <div id="wide" *ngIf="selectedCar != null">
-    <p-panel header="Owner history: {{selectedCar.licensePlate.license}}" [toggleable]="true">
+    <p-panel  header="Owner history: {{selectedCar.licensePlate.license}}" [toggleable]="true">
       <div *ngFor="let owner of ownerHistory; let i=index">
-        <p-panel [toggleable]="true">
+        <p-panel class="ownerPanel" [toggleable]="true" collapsed="true">
           <p-header>
-            <div *ngIf="i == 0">Current Owner</div>
-            <div *ngIf="i > 0">Past Owner</div>
+            <div *ngIf="i == 0">Current Owner: {{owner?.username}}</div>
+            <div *ngIf="i > 0">Past Owner: {{owner?.username}}</div>
           </p-header>
           <tr>
             <td>Name:</td>

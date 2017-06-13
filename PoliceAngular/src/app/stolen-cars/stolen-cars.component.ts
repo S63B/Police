@@ -160,5 +160,4 @@ export class StolenCarsComponent implements OnInit, OnDestroy {
         console.log(error);
       });
   }
-
 }
