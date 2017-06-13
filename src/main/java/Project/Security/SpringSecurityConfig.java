@@ -15,13 +15,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.authorizeRequests()
+			.authorizeRequests()
 				.anyRequest()
 				.fullyAuthenticated()
-					.and()
-				.httpBasic()
-					.and()
-				.csrf()
-				.disable();
+				.and()
+			.httpBasic()
+				.and()
+			.csrf()
+			.disable();
 	}
 }
