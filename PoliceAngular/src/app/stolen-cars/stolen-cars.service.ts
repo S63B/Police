@@ -6,13 +6,14 @@ import {Car} from "../domain/car";
 import {Observable} from "rxjs";
 import {Owner} from "../domain/Owner";
 import {Pol} from "../domain/pol";
+import {environment} from "environments/environment";
 
 
 
 @Injectable()
 export class StolenCarService {
-  private apiUrl = 'http://localhost:8080/police'; // URL to rest api
-  private trackingUrl: String = 'http://192.168.24.120:8080';
+  private policeUrl = environment.policeUrl;
+  private trackingUrl: String = environment.trackingUrl;
 
 
   constructor(private http: Http) {}
@@ -20,31 +21,31 @@ export class StolenCarService {
 
   getStolenCars(): Observable<Car[]> {
     return Observable.interval(1000)
-      .switchMap(() => this.http.get(this.apiUrl + "/stolen_cars")
+      .switchMap(() => this.http.get(this.policeUrl + "/stolen_cars")
         .map(this.extractResponse)
         .catch((error: any) => Observable.throw(error.json().error || 'Server error')));
   }
 
   getCurrentOwner(id:number): Observable<Owner> {
-    return this.http.get(this.apiUrl + "/" + id + "/owner")
+    return this.http.get(this.policeUrl + "/" + id + "/owner")
       .map(this.extractDataResponseEntity)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   getOwnerHistory(id:number): Observable<Owner[]> {
-    return this.http.get(this.apiUrl + "/" + id + "/owner_history")
+    return this.http.get(this.policeUrl + "/" + id + "/owner_history")
       .map(this.extractDataResponseEntity)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   getCar(licensePlate:string): Observable<Car> {
-    return this.http.get(this.apiUrl + "/license_plate/" + licensePlate)
+    return this.http.get(this.policeUrl + "/license_plate/" + licensePlate)
       .map(this.extractDataResponseEntity)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   setStolen(carId:number, isStolen:boolean): Observable<Car>{
-    return this.http.post(this.apiUrl + "/" + carId + "/" + isStolen, {headers: new Headers()})
+    return this.http.post(this.policeUrl + "/" + carId + "/" + isStolen, {headers: new Headers()})
       .map(this.extractDataResponseEntity)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }

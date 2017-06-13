@@ -3,25 +3,25 @@ img {
   height: 60px;
 }
 
-.ui-grid-col-2, .ui-grid-col-4{
+.ui-grid-col-2, .ui-grid-col-4 {
   font-weight: bold;
   padding-right: 5px;
   min-width: 160px;
 }
 
-.ui-grid-row-dialog{
+.ui-grid-row-dialog {
   width: 320px;
 }
 
-.ui-grid-col-12{
-  text-align:center;
+.ui-grid-col-12 {
+  text-align: center;
 }
 
-td{
+td {
   width: 200px;
 }
 
-.google-maps{
+.google-maps {
   width: 775px;
   height: 350px;
 }
@@ -30,20 +30,26 @@ td{
   width: 800px;
 }
 
-.ui-panel-titlebar{
+.ui-panel-titlebar {
   height: 30px;
 }
 
 #parent {
   display: flex;
 }
+
 #narrow {
   width: 800px;
 }
+
 #wide {
   margin-top: 25px;
   min-height: 600px;
   margin-left: 20px;
   flex: 1;
+}
+
+.ownerPanel .ui-panel {
+  width: 770px;
 }
 
