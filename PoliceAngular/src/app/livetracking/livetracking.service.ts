@@ -4,12 +4,13 @@ import {Observable} from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
 import {Pol} from "../domain/pol";
+import {environment} from "../../environments/environment.prod";
 
 
 @Injectable()
 export class liveTrackingService {
 
-  baseUrl: String = 'http://192.168.24.120:8080';
+  trackingUrl: String = environment.trackingUrl;
 
   constructor(private http: Http) {
     console.log("service created");
@@ -17,14 +18,14 @@ export class liveTrackingService {
 
   public getLatestPollByLicenseplate(licenseplate: String): Observable<Pol> {
     return Observable.interval(1000)
-      .switchMap(() => this.http.get(this.baseUrl + "/last_poll?license_plate=" + licenseplate)
+      .switchMap(() => this.http.get(this.trackingUrl + "/last_poll?license_plate=" + licenseplate)
         .map(this.extractData)
         .catch((error: any) => Observable.throw(error.json().error || 'Server error')));
   }
 
 
   public getAllPollsByLicenseplate(licenseplate: String): Observable<Pol[]> {
-    return this.http.get(this.baseUrl + "/pols?license_plate=" + licenseplate)
+    return this.http.get(this.trackingUrl + "/pols?license_plate=" + licenseplate)
       .map(this.extractData)
       .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
