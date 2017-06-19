@@ -39,7 +39,9 @@ export class StolenCarsComponent implements OnInit, OnDestroy {
     this.getStolenCars();
   }
   ngOnDestroy(){
-    this.pollSubscription.unsubscribe();
+    if (this.pollSubscription) {
+      this.pollSubscription.unsubscribe();      
+    }
   }
 
   getStolenCars(){
