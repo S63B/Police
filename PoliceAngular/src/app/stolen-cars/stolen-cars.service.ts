@@ -76,8 +76,8 @@ export class StolenCarService {
 
   private setHeaders(): Headers {
     const headers: Headers = new Headers();
-    // TODO change for actual username and password / base64 encoded string of 'username:password'
-    headers.append('Authorization', `Basic ${btoa('admin:admin')}`);
+    let info = localStorage.getItem("auth");
+    headers.append('Authorization', `Basic ${info}`);
     return headers;
   }
 }
