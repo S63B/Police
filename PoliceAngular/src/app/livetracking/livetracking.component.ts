@@ -1,58 +1,80 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Pol} from "../domain/pol";
 import {liveTrackingService} from "./livetracking.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-livetracking',
   templateUrl: './livetracking.component.html',
   styleUrls: ['./livetracking.component.css'],
-  providers:[liveTrackingService]
+  providers: [liveTrackingService]
 })
-export class LivetrackingComponent implements OnInit, OnDestroy{
+export class LivetrackingComponent implements OnInit, OnDestroy {
 
   title = 'Police';
-  intervalTimer : number;
-  pols:Pol[] = [];
-  licensePlate: string="";
+  pollSubscription: Subscription = null;
+  pols: Pol[] = [];
+  oldPols: Pol[] = [];
+  licensePlate: string = "";
+  initialized: boolean = false;
 
-  constructor(private liveTrackingService : liveTrackingService){
-    console.log(this.liveTrackingService);
+  constructor(private liveTrackingService: liveTrackingService) {
   }
 
+
   ngOnDestroy(): void {
-    clearInterval(this.intervalTimer);
+    if(this.pollSubscription){
+      this.pollSubscription.unsubscribe();
+    }
   }
 
   ngOnInit() {
   }
 
-  trackCar(){
-   let scope = this;
-   this.initData();
-   this.intervalTimer = window.setInterval(this.updateData, 30000, scope);
+  trackCar() {
+    this.clearData();
+    this.initData();
+    this.updateData();
   }
 
-  initData(){
+  clearData() {
+    if (this.pollSubscription) {
+      this.pollSubscription.unsubscribe();
+    }
+
+    this.oldPols = [];
+    this.pols = [];
+  }
+
+  initData() {
     this.liveTrackingService.getAllPollsByLicenseplate(this.licensePlate).subscribe(
-      res =>{
-        this.pols.concat(res);
+      res => {
+        this.oldPols = this.oldPols.concat(res);
+        console.log("Old pols: " + this.oldPols.length);
       },
       error => {
-        alert(error)
         console.log(error);
       });
   }
 
-
-  updateData(scope:this){
-    scope.liveTrackingService.getLatestPollByLicenseplate(scope.licensePlate).subscribe(
-       res =>{
-         let pol = new Pol(res.id, res.lat, res.lng ,res.timestampMillis);
-         scope.pols.push(pol);
-       },
-       error => {
-         alert(error)
-         console.log(error);
-       });
+  updateData() {
+    this.pollSubscription = this.liveTrackingService.getLatestPollByLicenseplate(this.licensePlate).subscribe(
+      res => {
+        let contains = false;
+        for (let p of this.pols) {
+          if (p.id == res.id) {
+            contains = true;
+          }
+        }
+        if (!contains) {
+          if (<any>res != "No polls available") {
+            this.pols.push(<Pol>res);
+            console.log("New pols: " + this.pols.length);
+          }
+        }
+      },
+      error => {
+        console.log(error);
+      });
   }
 }

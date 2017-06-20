@@ -7,10 +7,15 @@ import {PrimengModule} from "./primeng.module";
 import {AppRoutingModule} from "./app-routing.module";
 import {LiveTrackingModule} from "./livetracking/livetracking.module";
 import {StolenCarsModule} from "./stolen-cars/stolen-cars.module";
+import {DirectionsMapDirective} from "./directions-map.directive";
+import { LoginComponent } from './login/login.component';
+import {CanActivateAuthGuard} from "./can-active.authguard";
+import {AuthService} from "./auth.service";
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -21,7 +26,7 @@ import {StolenCarsModule} from "./stolen-cars/stolen-cars.module";
     LiveTrackingModule,
     StolenCarsModule,
   ],
-  providers: [],
+  providers: [AuthService, CanActivateAuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

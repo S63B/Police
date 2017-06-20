@@ -4,5 +4,10 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  policeUrl:"http://localhost:8090/police",
+  trackingUrl:"http://localhost:8080",
+  adminUrl:"http://localhost:8082",
+  envName: 'dev'
+
 };

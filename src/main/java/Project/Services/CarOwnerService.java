@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Kevin.
@@ -49,10 +52,19 @@ public class CarOwnerService {
     public Owner getCurrentOwnerByCar(Car car) {
         List<Car_Ownership> car_ownerships = carOwnerDao.getAllByCar(car);
 
-        Owner returnOwner = null;
-        if(car_ownerships.size() > 0){
-            returnOwner = car_ownerships.get(car_ownerships.size() - 1).getOwner();
-        }
-        return  returnOwner;
+        Car_Ownership currentOwner = null;
+
+        currentOwner = car_ownerships.stream().max(Comparator.comparing(Car_Ownership::getPurchaseDate)).get();
+        return currentOwner.getOwner();
+    }
+
+
+    public List<Owner> getCarOwnerHistory(Car car) {
+        List<Car_Ownership> car_ownerships = carOwnerDao.getAllByCar(car);
+        List<Owner> ownerHistory = new ArrayList<>();
+
+        car_ownerships = car_ownerships.stream().sorted(Comparator.comparing(Car_Ownership::getPurchaseDate).reversed()).collect(Collectors.toList());
+        car_ownerships.stream().forEach(co -> ownerHistory.add(co.getOwner()));
+        return ownerHistory;
     }
 }

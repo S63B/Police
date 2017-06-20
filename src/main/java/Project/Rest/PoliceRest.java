@@ -1,8 +1,11 @@
 package Project.Rest;
 
 import Project.Services.CarOwnerService;
+import Project.Services.CarService;
+import Project.Services.LicensePlateService;
 import Project.Services.PoliceService;
 import com.S63B.domain.Entities.Car;
+import com.S63B.domain.Entities.LicensePlate;
 import com.S63B.domain.Entities.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +19,6 @@ import java.util.List;
 import static javax.ws.rs.core.Response.Status.OK;
 import static javax.ws.rs.core.Response.Status.REQUEST_TIMEOUT;
 
-import javax.ws.rs.Path;
-
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/police")
@@ -25,11 +26,15 @@ public class PoliceRest {
 
     private PoliceService policeService;
     private CarOwnerService carOwnerService;
+    private LicensePlateService licensePlateService;
+    private CarService carService;
 
     @Autowired
-    public PoliceRest(PoliceService policeService, CarOwnerService carOwnerService){
+    public PoliceRest(PoliceService policeService, CarOwnerService carOwnerService, LicensePlateService licensePlateService, CarService carService) {
         this.policeService = policeService;
         this.carOwnerService = carOwnerService;
+        this.licensePlateService = licensePlateService;
+        this.carService = carService;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -41,7 +46,23 @@ public class PoliceRest {
         System.out.println("Carid: " + id);
         System.out.println("Car: " + car);
 
-        if (car == null){
+        if (car == null) {
+            status = HttpStatus.NO_CONTENT;
+        }
+
+        return new ResponseEntity<>(car, status);
+    }
+
+    @RequestMapping(value = "license_plate/{licensePlate}", method = RequestMethod.GET)
+    public ResponseEntity<Car> getCar(@PathVariable("licensePlate") String licensePlate) {
+        HttpStatus status = HttpStatus.OK;
+        Car car = null;
+
+        LicensePlate license = licensePlateService.getCarByLicenseplate(licensePlate);
+        if (license != null) {
+            car = carService.getCarByLicensePlate(license);
+        }
+        if (car == null) {
             status = HttpStatus.NO_CONTENT;
         }
 
@@ -54,13 +75,28 @@ public class PoliceRest {
 
         Car getCar = policeService.getCar(id);
         Owner currentOwner = null;
-        if(getCar != null){
+        if (getCar != null) {
             currentOwner = carOwnerService.getCurrentOwnerByCar(getCar);
         }
-        if(currentOwner == null){
+        if (currentOwner == null) {
             status = HttpStatus.NO_CONTENT;
         }
         return new ResponseEntity<>(currentOwner, status);
+    }
+
+    @RequestMapping(value = "{id}/owner_history", method = RequestMethod.GET)
+    public ResponseEntity<List<Owner>> getOwnerHistory(@PathVariable("id") int id) {
+        HttpStatus status = HttpStatus.OK;
+
+        Car getCar = policeService.getCar(id);
+        List<Owner> ownerHistory = null;
+        if (getCar != null) {
+            ownerHistory = carOwnerService.getCarOwnerHistory(getCar);
+        }
+        if (ownerHistory == null) {
+            status = HttpStatus.NO_CONTENT;
+        }
+        return new ResponseEntity<>(ownerHistory, status);
     }
 
     @RequestMapping(value = "{id}/{stolen}", method = RequestMethod.POST)
@@ -69,7 +105,7 @@ public class PoliceRest {
 
         Car car = policeService.setStolen(id, stolen);
 
-        if (car == null){
+        if (car == null) {
             status = HttpStatus.NO_CONTENT;
         }
 
@@ -79,13 +115,15 @@ public class PoliceRest {
     /**
      * Returns a list of stolen cars.
      * Sample request: GET http://localhost:8080/police/stolen_cars
+     *
      * @return List of stolen cars if successful else the error message.
      */
     @RequestMapping(value = "stolen_cars", method = RequestMethod.GET)
-    public Response getStolenCars(){
-        GenericEntity<List<Car>> cars = new GenericEntity<List<Car>>(policeService.getStolenCars()) {};
+    public Response getStolenCars() {
+        GenericEntity<List<Car>> cars = new GenericEntity<List<Car>>(policeService.getStolenCars()) {
+        };
 
-        if(cars!=null){
+        if (cars != null) {
             return Response.status(OK).entity(cars).build();
         }
         return Response.status(REQUEST_TIMEOUT).entity("Something went wrong.").build();

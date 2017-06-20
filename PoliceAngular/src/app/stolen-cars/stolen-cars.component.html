@@ -2,47 +2,150 @@
   {{title}}
 </h1>
 
-<input placeholder="License plate..." [(ngModel)]="search" >
-<p-dataList [value]="cars | searchfilter: 'licensePlate' : search" [paginator]="true" [rows]="8">
-  <ng-template let-car   pTemplate="item">
-    <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;padding:20px;border-bottom:1px solid #D5D5D5;">
-      <div class="ui-grid-row">
-        <div class="ui-grid-col-3" style="text-align:center;vertical-align: middle"><i class="fa fa-search" (click)="showInfoCar(car)" style="cursor:pointer;float:left;margin-top: 25px"></i><img src="assets/nl.png"></div>
-        <div class="ui-grid-col-9" (click)="showHistoryCar(car)">
-          <div class="ui-grid ui-grid-responsive ui-fluid">
-            <div class="ui-grid-row" >
-              <div class="ui-grid-col-2">License plate:</div>
-              <div class="ui-grid-col-10">{{car.licensePlate.license}}</div>
-            </div>
-            <div class="ui-grid-row">
-              <div class="ui-grid-col-2">Id:</div>
-              <div class="ui-grid-col-10">{{car.id}}</div>
+<div id="parent">
+  <!--Stolen car list-->
+  <div id="narrow">
+    <input style="margin-bottom: 5px" placeholder="License plate..." [(ngModel)]="filterSearch">
+    <p-dataList [value]="cars | searchfilter: 'licensePlate' : filterSearch" [paginator]="true" [rows]="8">
+      <ng-template let-car pTemplate="item">
+        <div class="ui-grid ui-grid-responsive ui-fluid"
+             style="font-size:16px;padding:20px;border-bottom:1px solid #D5D5D5;">
+          <div class="ui-grid-row">
+            <div *ngIf="isCountryDefined(car?.tracker?.country)" class="ui-grid-col-3"
+                 style="text-align:center;vertical-align: middle"><i class="fa fa-search" (click)="showInfoCar(car)"
+                                                                     style="cursor:pointer;float:left;margin-top: 25px"></i><img
+              src="assets/{{car?.tracker?.country}}.png"></div>
+            <div *ngIf="!isCountryDefined(car?.tracker?.country)" class="ui-grid-col-3"
+                 style="text-align:center;vertical-align: middle"><i class="fa fa-search" (click)="showInfoCar(car)"
+                                                                     style="cursor:pointer;float:left;margin-top: 25px"></i><img
+              src="assets/questionmark.png"></div>
+            <div class="ui-grid-col-9" (click)="selectCar(car)">
+              <div class="ui-grid ui-grid-responsive ui-fluid">
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-2">License plate:</div>
+                  <div class="ui-grid-col-10">{{car.licensePlate.license}}</div>
+                </div>
+                <div class="ui-grid-row">
+                  <div class="ui-grid-col-2">Id:</div>
+                  <div class="ui-grid-col-10">{{car.id}}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </ng-template>
+    </p-dataList>
+
+    <br>
+
+    <!--"Register stolen cars-->
+    <p-panel header="Register stolen cars" [toggleable]="true">
+      <input placeholder="License plate..." [(ngModel)]="searchLicense">
+      <button pButton type="button" style="width: 138px;" label="Submit" (click)="searchLicensePlate()"></button>
+
+      <br>
+
+      <div *ngIf="searchCar != null" class="ui-grid ui-grid-responsive ui-fluid"
+           style="font-size:16px;padding:20px;border-bottom:1px solid #D5D5D5;">
+        <div class="ui-grid-row">
+          <div class="ui-grid-col-3" style="text-align:center;vertical-align: middle"><i class="fa fa-search" (click)="showInfoCar(searchCar)" style="cursor:pointer;float:left;margin-top: 25px"></i>
+            <img src="assets/{{searchCar?.tracker?.country}}.png"></div>
+          <div class="ui-grid-col-9">
+            <div class="ui-grid ui-grid-responsive ui-fluid">
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-2">License plate:</div>
+                <div class="ui-grid-col-10">{{searchCar?.licensePlate?.license}}</div>
+              </div>
+              <div class="ui-grid-row">
+                <div class="ui-grid-col-2">Id:</div>
+                <div class="ui-grid-col-10">{{searchCar?.id}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <p-inputSwitch onLabel="Stolen" offLabel="Not Stolen" (onChange)="setStolen($event)"
+                       [(ngModel)]="searchCar.stolen"></p-inputSwitch>
       </div>
+    </p-panel>
+  </div>
+
+
+  <!--Owner history of selected car-->
+  <div id="wide" *ngIf="selectedCar != null">
+    <p-panel  header="Owner history: {{selectedCar.licensePlate.license}}" [toggleable]="true">
+      <div *ngFor="let owner of ownerHistory; let i=index">
+        <p-panel class="ownerPanel" [toggleable]="true" collapsed="true">
+          <p-header>
+            <div *ngIf="i == 0">Current Owner: {{owner?.username}}</div>
+            <div *ngIf="i > 0">Past Owner: {{owner?.username}}</div>
+          </p-header>
+          <tr>
+            <td>Name:</td>
+            <td>{{owner?.name}}</td>
+          </tr>
+          <tr>
+            <td>License plate:</td>
+            <td>{{selectedCar?.licensePlate?.license}}</td>
+          </tr>
+          <tr>
+            <td>Username:</td>
+            <td>{{owner?.username}}</td>
+          </tr>
+          <tr>
+            <td>Address:</td>
+            <td>{{owner?.address}}</td>
+          </tr>
+          <tr>
+            <td>Residence:</td>
+            <td>{{owner?.residence}}</td>
+          </tr>
+          <tr>
+            <td>Uses website:</td>
+            <td>{{owner?.usesWebsite}}</td>
+          </tr>
+          <tr>
+            <td>Role:</td>
+            <td>{{owner?.role}}</td>
+          </tr>
+          <tr>
+            <td>Id:</td>
+            <td>{{owner?.id}}</td>
+          </tr>
+        </p-panel>
+      </div>
+    </p-panel>
+
+    <br>
+
+    <!--Google maps tracking of selected car-->
+    <div *ngIf="selectedCar != null">
+      <p-panel header="Tracking: {{selectedCar.licensePlate.license}}"
+               [toggleable]="true">
+        <div *ngIf="pols.length > 0; else noPols" id="google-map-wrapper">
+          <sebm-google-map class="google-maps">
+            <sebm-google-map-directions [pols]="pols" [oldPols]="oldPols"></sebm-google-map-directions>
+          </sebm-google-map>
+        </div>
+
+        <ng-template #noPols>
+          <p>No polls available</p>
+        </ng-template>
+      </p-panel>
     </div>
-  </ng-template>
-</p-dataList>
-
-<br>
-
-<div *ngIf="selectedCar != null">
-  <p-panel header="Owner history" [toggleable]="true">
-    <p>Name: {{owner?.name}}</p>
-    <p>Username: {{owner?.username}}</p>
-    <p>Address: {{owner?.address}}</p>
-    <p>Residence: {{owner?.residence}}</p>
-    <p>Uses website: {{owner?.usesWebsite}}</p>
-    <p>Role : {{owner?.role}}</p>
-    <p>Id : {{owner?.id}}</p>
-  </p-panel>
+  </div>
 </div>
 
-<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="350" (onAfterHide)="onDialogHide()">
+
+
+<!--Pop up dialog-->
+<p-dialog header="Car Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+          width="350" (onAfterHide)="onDialogHide()">
   <div class="ui-grid ui-grid-responsive ui-fluid" style="font-size:16px;vertical-align: middle">
     <div class="ui-grid-row" style="width: inherit">
-      <div class="ui-grid-col-12"><img src="assets/nl.png"></div>
+      <div class="ui-grid-col-12"><img src="assets/{{infoCar?.tracker?.country}}.png"></div>
     </div>
     <br>
     <div class="ui-grid-row" class="ui-grid-row-dialog">
@@ -55,7 +158,7 @@
     </div>
     <div class="ui-grid-row" class="ui-grid-row-dialog">
       <div class="ui-grid-col-4" style="text-align:center">License plate:</div>
-      <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.licensePlate.license}}</div>
+      <div class="ui-grid-col-8" style="text-align:center">{{infoCar?.licensePlate?.license}}</div>
     </div>
     <div class="ui-grid-row" class="ui-grid-row-dialog">
       <div class="ui-grid-col-4" style="text-align:center">Id:</div>
