@@ -7,13 +7,22 @@ import { LoginComponent } from "app/login/login.component";
 import { CanActivateAuthGuard } from "app/can-active.authguard";
 
 const routes: Routes = [
-  { path: '', redirectTo: '/livetracking', pathMatch: 'full',
+  { 
+    path: '', 
+    redirectTo: '/livetracking', 
+    pathMatch: 'full',
     canActivate: [CanActivateAuthGuard] },
-  { path: 'livetracking',  component: LivetrackingComponent,
+  { 
+    path: 'livetracking',  
+    component: LivetrackingComponent,
     canActivate: [CanActivateAuthGuard] },
-  { path: 'stolencars',  component: StolenCarsComponent,
+  { 
+    path: 'stolencars',  
+    component: StolenCarsComponent,
     canActivate: [CanActivateAuthGuard] },
-  { path: 'login',  component: LoginComponent },
+  { 
+    path: 'login',  
+    component: LoginComponent },
 ];
 
 @NgModule({

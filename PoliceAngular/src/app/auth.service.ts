@@ -32,7 +32,8 @@ export class AuthService {
   
   check(): Observable<any>{
     return this.http.get(`${this.adminUrl}/account/loggedin`, { headers: this.setHeaders()})
-      .map(res => res.status);
+      .map(res => res.status)
+      .catch(res => Observable.of(res.status));;
   }
 
   
