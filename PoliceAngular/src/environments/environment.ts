@@ -7,6 +7,7 @@ export const environment = {
   production: false,
   policeUrl:"http://localhost:8090/police",
   trackingUrl:"http://localhost:8080",
+  adminUrl:"http://localhost:8082",
   envName: 'dev'
 
 };
